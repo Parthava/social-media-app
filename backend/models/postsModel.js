@@ -1,10 +1,11 @@
 import mongoose from 'mongoose'
 
 const likesSchema = mongoose.Schema({
-	user_id: {
-		type: Number,
-		required: true
-	}
+	liked_by: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
+		ref: 'User'
+	},
 	name: {
 		type: String,
 		required: true
@@ -14,11 +15,16 @@ const likesSchema = mongoose.Schema({
 })
 
 const postSchema = mongoose.Schema({
+	created_by: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
+		ref: 'User'
+	},
 	post: {
 		type: String,
 		required: true
-	}
-	likes: [likesSchema],
+	},
+	likes: [likesSchema]
 }, {
 	timestamps: true
 })

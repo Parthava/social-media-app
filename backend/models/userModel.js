@@ -1,9 +1,10 @@
 import mongoose from 'mongoose'
 
 const friendReqSchema = mongoose.Schema({
-	user_id: {
-		type: Number,
-		required: true
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
+		ref: 'User'
 	},
 	name: {
 		type: String,
@@ -14,9 +15,10 @@ const friendReqSchema = mongoose.Schema({
 })
 
 const friendListSchema = mongoose.Schema({
-	user_id: {
-		type: Number,
-		required: true
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
+		ref: 'User'
 	},
 	name: {
 		type: String,
