@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Card, CardActions, CardContent, Button, Typography, Container, CssBaseline, TextField,
 			CardHeader, CardMedia, Collapse, Avatar, IconButton  } from '@material-ui/core';
 import Header from '../components/Header'
@@ -6,14 +7,25 @@ import useStyles from './OtherStyles'
 import clsx from 'clsx';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
-const Feed = () => {
+const Feed = ({history}) => {
 
 	const classes = useStyles();
 	const [like, setLike] = useState(false)
 
+	const dispatch = useDispatch()
+
+	const userLogin = useSelector(state => state.userLogin)
+	const {loading, error, userInfo} = userLogin
+
 	const handleSubmit = () => {
 		alert("Click!!")
 	}
+
+	useEffect(() => {
+		if(!userInfo) {
+			history.push('/')
+		}
+	}, [history, userInfo])
 
 
   return (

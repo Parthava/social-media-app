@@ -15,6 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from "react-router-dom";
 import useStyles from './BasicStyles'
+import { register } from '../actions/userActions';
 
 const Signup = () => {
 
@@ -24,6 +25,17 @@ const Signup = () => {
 	const [password, setPassword] = useState('')
 
 	const classes = useStyles();
+
+	const dispatch = useDispatch()
+
+	const userRegister = useSelector(state => state.userRegister)
+	const {loading, error, userInfo} = userRegister
+
+	const submitHandler = (event) => {
+		//console.log(email, password)
+		event.preventDefault()
+		dispatch(register(firstname, lastname, email, password))
+	}
 
   return (
     <>
