@@ -11,7 +11,8 @@ const createdPost = asyncHandler(async (req, res) => {
   const { post } = req.body
 
   const newPost = new Posts({
-  	created_by: req.user._id,
+  	created_by_id: req.user._id,
+    created_by_name: req.user.firstname,
     post: post
   })
 
@@ -27,20 +28,10 @@ const createdPost = asyncHandler(async (req, res) => {
 
 const getPosts = asyncHandler(async (req, res) => {
 
-  // const user = await User.findById(req.user._id)
+  const posts = await Posts.find({})
 
-  // if(user.friendlist.length <= 0) {
-  // 	const posts = await Posts.find({})
-  // 	const data = posts.filter(post => {
-  // 		if(post.created_by.equals(req.user._id)) {
-  // 			return post
-  // 		}
-  // 	})
-  // 	res.status(200).send(data)
-  // }
-
-  
+  res.status(200).send(posts)
 })
 
 
-export { createdPost }
+export { createdPost, getPosts }

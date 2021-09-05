@@ -15,10 +15,14 @@ const likesSchema = mongoose.Schema({
 })
 
 const postSchema = mongoose.Schema({
-	created_by: {
+	created_by_id: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true,
 		ref: 'User'
+	},
+	created_by_name: {
+		type: String,
+		required: true
 	},
 	post: {
 		type: String,

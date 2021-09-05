@@ -21,8 +21,19 @@ const Profile = ({history}) => {
 	const profileUpdate = useSelector(state => state.profileUpdate)
 	const {loading:profileLoading, error:profileError, updatedProfile} = profileUpdate
 
-	const [firstname, setFirstname] = useState(userInfo.firstname)
-	const [lastname, setLastName] = useState(userInfo.lastname)
+	let fname, lname
+
+	if(userInfo) {
+		fname = userInfo.firstname
+		lname = userInfo.lastname
+	}
+	else {
+		fname = ''
+		lname = ''
+	}
+
+	const [firstname, setFirstname] = useState(fname)
+	const [lastname, setLastName] = useState(lname)
 
 	useEffect(() => {
 		if(!userInfo) {

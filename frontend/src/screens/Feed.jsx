@@ -6,14 +6,16 @@ import Header from '../components/Header'
 import useStyles from './OtherStyles'
 import clsx from 'clsx';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { createPost } from '../actions/postActions';
+import { createPost, listPosts } from '../actions/postActions';
 import Alert from '@material-ui/lab/Alert';
 
 const Feed = ({history}) => {
 
 	const classes = useStyles();
-	const [like, setLike] = useState(false)
+	const [likePostId, setLikePostId] = useState()
 	const [postInput, setPostInput] = useState()
+
+	//console.log(likePostId)
 
 	const dispatch = useDispatch()
 
@@ -29,6 +31,9 @@ const Feed = ({history}) => {
 	const postCreate = useSelector(state => state.postCreate)
 	const {loading:postLoading, error:postError, post} = postCreate
 
+	const postList = useSelector(state => state.postList)
+	let {loading:getPostLoding, error:getPostError, posts} = postList
+
 	const handleSubmit = (event) => {
 		event.preventDefault()
 		dispatch(createPost(postInput))
@@ -39,7 +44,10 @@ const Feed = ({history}) => {
 		if(!userInfo) {
 			history.push('/')
 		}
-	}, [history, userInfo])
+		else {
+			dispatch(listPosts())
+		}
+	}, [history, userInfo, post])
 
 
   return (
@@ -77,37 +85,38 @@ const Feed = ({history}) => {
 	      </CardContent>
 	    </Card>
 
-	    <Card className={classes.content}>
-	      <CardHeader
-	        avatar={
-	          <Avatar aria-label="recipe" className={classes.avatar}>
-	            R
-	          </Avatar>
-	        }
-	        title="Shrimp and Chorizo Paella"
-	        subheader="September 14, 2016"
-	      />
-	      {/*<CardMedia
-	        className={classes.media}
-	        image="/static/images/cards/paella.jpg"
-	        title="Paella dish"
-	      />
-*/}	      <CardContent>
-	        <Typography variant="body2" color="textSecondary" component="p">
-	          This impressive paella is a perfect party dish and a fun meal to cook together with your
-	          guests. Add 1 cup of frozen peas along with the mussels, if you like.
-	        </Typography>
-	      </CardContent>
-	      <CardActions disableSpacing>
-	        <IconButton aria-label="add to favorites">
-	          {like ? <FavoriteIcon style={{ color: "red" }} onClick={() => { setLike(false) }} /> : 
-	          <FavoriteIcon onClick={() => { setLike(true) }} />}
-	        </IconButton>
-	        <Typography variant="body2" color="textSecondary" component="p">
-	          1
-	        </Typography>
-	      </CardActions>
-	    </Card>
+	    {posts.map(post => (
+	    	<Card className={classes.content} key={post._id}>
+		      <CardHeader
+		        avatar={
+		          <Avatar aria-label="recipe" className={classes.avatar} style={{backgroundColor: "#ff4d4d"}}>
+		            {post.created_by_name.slice(0,1)}
+		          </Avatar>
+		        }
+		        title={post.created_by_name}
+		        subheader={post.updatedAt.slice(0,19)}
+		      />
+		      {/*<CardMedia
+		        className={classes.media}
+		        image="/static/images/cards/paella.jpg"
+		        title="Paella dish"
+		      />
+	*/}	      <CardContent>
+		        <Typography variant="body2" color="textSecondary" component="p">
+		          {post.post}
+		        </Typography>
+		      </CardContent>
+		      <CardActions disableSpacing>
+		        <IconButton aria-label="add to favorites">
+		          <FavoriteIcon onClick={() => { setLikePostId(post._id)}}/>
+		        </IconButton>
+		        <Typography variant="body2" color="textSecondary" component="p">
+		          1
+		        </Typography>
+		      </CardActions>
+		    </Card>
+
+	    	))}
 
 	</Container>
     </>
