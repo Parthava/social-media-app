@@ -16,8 +16,9 @@ import Container from '@material-ui/core/Container';
 import { Link } from "react-router-dom";
 import useStyles from './BasicStyles'
 import { register } from '../actions/userActions';
+import Alert from '@material-ui/lab/Alert';
 
-const Signup = () => {
+const Signup = ({history}) => {
 
 	const [firstname, setFirstName] = useState('')
 	const [lastname, setLastName] = useState('')
@@ -28,12 +29,19 @@ const Signup = () => {
 
 	const dispatch = useDispatch()
 
-	const userRegister = useSelector(state => state.userRegister)
-	const {loading, error, userInfo} = userRegister
+	const userLogin = useSelector(state => state.userLogin)
+	const {loading, error, userInfo} = userLogin
+
+	useEffect(() => {
+		if(userInfo) {
+			history.push('/feed')
+		}
+	}, [history, userInfo])
 
 	const submitHandler = (event) => {
 		//console.log(email, password)
 		event.preventDefault()
+		//console.log(firstname, lastname, email, password)
 		dispatch(register(firstname, lastname, email, password))
 	}
 
@@ -50,6 +58,9 @@ const Signup = () => {
 	        </Avatar>
 	        <Typography component="h1" variant="h5">
 	          Sign up
+	        </Typography>
+	        <Typography component="h1" variant="h5">
+	          {error && <Alert severity="error">{error}</Alert>}
 	        </Typography>
 	        <form className={classes.form} onSubmit={submitHandler} noValidate>
 	          <Grid container spacing={2}>

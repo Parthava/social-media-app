@@ -7,6 +7,7 @@ import useStyles from './OtherStyles'
 import clsx from 'clsx';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { createPost } from '../actions/postActions';
+import Alert from '@material-ui/lab/Alert';
 
 const Feed = ({history}) => {
 
@@ -18,6 +19,12 @@ const Feed = ({history}) => {
 
 	const userLogin = useSelector(state => state.userLogin)
 	const {loading, error, userInfo} = userLogin
+
+	let postMsg = "What's on your mind, User?"
+
+	if(userInfo) {
+		postMsg = "What's on your mind, " + userInfo.firstname + "?"
+	}
 
 	const postCreate = useSelector(state => state.postCreate)
 	const {loading:postLoading, error:postError, post} = postCreate
@@ -40,6 +47,8 @@ const Feed = ({history}) => {
     <Header/>
 	<Container component="main" maxWidth="xs" className={classes.top}>
       <CssBaseline />
+      {postError && <Alert severity="error">{postError}</Alert>}<br/>
+      {post && <Alert severity="success">Post added successfully</Alert>}<br/>
     	<Card className={classes.root}>
 	      <CardContent>
 	        <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -47,7 +56,7 @@ const Feed = ({history}) => {
 	        </Typography>
 	        <form className={classes.form} onSubmit={handleSubmit} noValidate>
 		        <TextField
-				  placeholder="What's on your mind, User?"
+				  placeholder={postMsg}
 				  multiline
 				  fullWidth={true}
 				  minRows={3}
