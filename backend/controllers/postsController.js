@@ -25,22 +25,22 @@ const createdPost = asyncHandler(async (req, res) => {
   }
 })
 
-// const getPosts = asyncHandler(async (req, res) => {
+const getPosts = asyncHandler(async (req, res) => {
 
-//   const user = await User.findById(req.user._id)
+  // const user = await User.findById(req.user._id)
 
-//   if(user.friendlist.length <= 0) {
-//   	const posts = await Posts.find({})
-//   	const data = posts.filter(post => {
-//   		if(post.created_by.equals(req.user._id)) {
-//   			return post
-//   		}
-//   	})
-//   	res.status(200).send(data)
-//   }
+  // if(user.friendlist.length <= 0) {
+  // 	const posts = await Posts.find({})
+  // 	const data = posts.filter(post => {
+  // 		if(post.created_by.equals(req.user._id)) {
+  // 			return post
+  // 		}
+  // 	})
+  // 	res.status(200).send(data)
+  // }
 
   
-// })
+})
 
 
 export { createdPost }
