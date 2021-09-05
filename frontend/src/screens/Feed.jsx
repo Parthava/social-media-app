@@ -6,19 +6,26 @@ import Header from '../components/Header'
 import useStyles from './OtherStyles'
 import clsx from 'clsx';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import { createPost } from '../actions/postActions';
 
 const Feed = ({history}) => {
 
 	const classes = useStyles();
 	const [like, setLike] = useState(false)
+	const [postInput, setPostInput] = useState()
 
 	const dispatch = useDispatch()
 
 	const userLogin = useSelector(state => state.userLogin)
 	const {loading, error, userInfo} = userLogin
 
-	const handleSubmit = () => {
-		alert("Click!!")
+	const postCreate = useSelector(state => state.postCreate)
+	const {loading:postLoading, error:postError, post} = postCreate
+
+	const handleSubmit = (event) => {
+		event.preventDefault()
+		dispatch(createPost(postInput))
+		setPostInput('')
 	}
 
 	useEffect(() => {
@@ -44,6 +51,8 @@ const Feed = ({history}) => {
 				  multiline
 				  fullWidth={true}
 				  minRows={3}
+				  value={postInput}
+				  onChange={(event) => { setPostInput(event.target.value) }}
 				  required
 				/>
 				<Button
@@ -69,12 +78,12 @@ const Feed = ({history}) => {
 	        title="Shrimp and Chorizo Paella"
 	        subheader="September 14, 2016"
 	      />
-	      <CardMedia
+	      {/*<CardMedia
 	        className={classes.media}
 	        image="/static/images/cards/paella.jpg"
 	        title="Paella dish"
 	      />
-	      <CardContent>
+*/}	      <CardContent>
 	        <Typography variant="body2" color="textSecondary" component="p">
 	          This impressive paella is a perfect party dish and a fun meal to cook together with your
 	          guests. Add 1 cup of frozen peas along with the mussels, if you like.

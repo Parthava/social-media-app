@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const friendReqSchema = mongoose.Schema({
-	user: {
+	pending_friend_id: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true,
 		ref: 'User'
@@ -15,7 +15,7 @@ const friendReqSchema = mongoose.Schema({
 })
 
 const friendListSchema = mongoose.Schema({
-	user: {
+	friend_id: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true,
 		ref: 'User'
