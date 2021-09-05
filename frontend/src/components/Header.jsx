@@ -68,7 +68,6 @@ const Header = () => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}><Link to='/profile' style={{textDecoration: "None"}}> Profile </Link></MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem onClick={logoutHandler}>Logout</MenuItem>
     </Menu>
   );
