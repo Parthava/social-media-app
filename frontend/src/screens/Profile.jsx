@@ -2,17 +2,14 @@ import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel,
 			Checkbox, Grid, Box, Typography, Container } from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from "react-router-dom";
 import useStyles from './BasicStyles'
-import { login } from '../actions/userActions';
 import Alert from '@material-ui/lab/Alert';
+import { updateProfile } from '../actions/userActions';
+import Header from '../components/Header'
 
-const Signin = ({history}) => {
-
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-
+const Profile = ({history}) => {
 
 	const classes = useStyles();
 
@@ -21,34 +18,50 @@ const Signin = ({history}) => {
 	const userLogin = useSelector(state => state.userLogin)
 	const {loading, error, userInfo} = userLogin
 
+	const profileUpdate = useSelector(state => state.profileUpdate)
+	const {loading:profileLoading, error:profileError, updatedProfile} = profileUpdate
+
+	let fname, lname
+
+	if(userInfo) {
+		fname = userInfo.firstname
+		lname = userInfo.lastname
+	}
+	else {
+		fname = ''
+		lname = ''
+	}
+
+	const [firstname, setFirstname] = useState(fname)
+	const [lastname, setLastName] = useState(lname)
+
 	useEffect(() => {
-		if(userInfo) {
-			history.push('/feed')
+		if(!userInfo) {
+			history.push('/')
 		}
 	}, [history, userInfo])
 
 	const submitHandler = (event) => {
 		//console.log(email, password)
 		event.preventDefault()
-		dispatch(login(email, password))
+		dispatch(updateProfile(firstname, lastname))
 	}
 
   return (
     <>
+    	<Header/>
     	<Container component="main" maxWidth="xs">
 	      <CssBaseline />
 	      <div className={classes.paper}>
 	      	<Typography component="h1" variant="h5" style={{color: "red"}}>
-	          Welcome to SocialMedia
+	          Update profile
 	        </Typography>
 	        <Avatar className={classes.avatar}>
-	         <LockOutlinedIcon/>
+	         <AccountCircleIcon/>
 	        </Avatar>
 	        <Typography component="h1" variant="h5">
-	          Sign in
-	        </Typography>
-	        <Typography component="h1" variant="h5">
-	          {error && <Alert severity="error">{error}</Alert>}
+	          {profileError && <Alert severity="error">{profileError}</Alert>}
+	          {updatedProfile && <Alert severity="success">Profile updated successfully! Logout and login agian to view changes</Alert>}
 	        </Typography>
 	        <form className={classes.form} onSubmit={submitHandler} noValidate>
 	          <TextField
@@ -56,11 +69,10 @@ const Signin = ({history}) => {
 	            margin="normal"
 	            required
 	            fullWidth
-	            id="email"
-	            label="Email Address"
+	            id="firstname"
 	            name="email"
-	            value={email}
-	            onChange={(event) => { setEmail(event.target.value) }}
+	            value={firstname}
+	            onChange={(event) => { setFirstname(event.target.value) }}
 	            autoComplete="email"
 	            autoFocus
 	            required
@@ -71,10 +83,8 @@ const Signin = ({history}) => {
 	            required
 	            fullWidth
 	            name="password"
-	            value={password}
-	            onChange={(event) => { setPassword(event.target.value) }}
-	            label="Password"
-	            type="password"
+	            value={lastname}
+	            onChange={(event) => { setLastName(event.target.value) }}
 	            id="password"
 	            autoComplete="current-password"
 	            required
@@ -86,14 +96,8 @@ const Signin = ({history}) => {
 	            color="primary"
 	            className={classes.submit}
 	          >
-	            Sign In
+	            Update
 	          </Button>
-	          <Grid container>
-	            <Grid item>
-	            	{"Don't have an account? "} 
-	              	<Link to="/signup">Sign up</Link>
-	            </Grid>
-	          </Grid>
 	        </form>
 	      </div>
 	    </Container>
@@ -101,4 +105,4 @@ const Signin = ({history}) => {
   );
 }
 
-export default Signin;
+export default Profile;

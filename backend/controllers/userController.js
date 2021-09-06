@@ -42,6 +42,8 @@ const registerUser = asyncHandler(async(req,res) => {
 			email,
 			password } = req.body
 
+	//console.log(firstname, lastname, email, password)
+
 	const userExits = await User.findOne({email})
 
 	if(userExits) {
@@ -74,4 +76,27 @@ const registerUser = asyncHandler(async(req,res) => {
 	}
 })
 
-export { authUser, registerUser }
+// @desc    Update user profile
+// @route   POST /api/users/profile
+// @access  Private
+
+const updateUser = asyncHandler(async (req, res) => {
+  const { firstname, lastname } = req.body
+
+  const user = await User.findById(req.user._id)
+
+  if(user) {
+    user.firstname = firstname
+    user.lastname = lastname
+
+    const updatedUser = await user.save()
+    res.json(updatedUser)
+  }
+  else {
+    res.status(404)
+    throw new Error('User not found')
+  }
+
+})
+
+export { authUser, registerUser, updateUser }

@@ -5,6 +5,7 @@ import Feed from './screens/Feed'
 import Friendreq from './screens/Friendreq'
 import Suggestions from './screens/Suggestions'
 import Footer from './components/Footer'
+import Profile from './screens/Profile'
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function App() {
@@ -17,7 +18,8 @@ function App() {
             <Route exact path='/signup' component={Signup}/>
             <Route exact path='/feed' component={Feed}/>
             <Route exact path='/friendreq' component={Friendreq}/>
-            <Route exact path='/suggestions' component={Suggestions}/>  
+            <Route exact path='/suggestions' component={Suggestions}/>
+            <Route exact path='/profile' component={Profile}/>  
           </Switch>
         </main>
         <Footer/>
